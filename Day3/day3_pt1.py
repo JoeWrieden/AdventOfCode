@@ -30,8 +30,7 @@ def moveWire(grid, currentLocation, command, largestDistance, centralPort):
     currentLocation[1] += direction[command[0]][0]*int(command[1:])
     return currentLocation,largestDistance
 
-l = loadInput()
-def printLine(wires):
+def calcWires(wires):
     largestDistance = 1000000000000000000000
     grid = [["." for i in range(20000)] for y in range (20000)]
     print("Grid Made")
@@ -47,5 +46,4 @@ def printLine(wires):
     return largestDistance
 
 wires = loadInput()
-
-print(printLine(wires))
+print(calcWires(wires))
