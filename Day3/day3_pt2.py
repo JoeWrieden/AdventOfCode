@@ -5,6 +5,34 @@ def loadInput():
             l.append([i.replace("\n","") for i in i.split(",")])
     return l
 
+def calcGridSize(wires):
+    x = y = u = d = l = r = 0
+    dim = []
+    for wire in wires:
+        for command in wire:
+            if command[0] == "R":
+                x += int(command[1:])
+                if x > r:
+                    r = x
+            elif command[0] == "L":
+                x -= int(command[1:])
+                if x < l:
+                    l = x
+            elif command[0] == "D":
+                y += int(command[1:])
+                if y > d:
+                    d = y
+            elif command[0] == "U":
+                y -= int(command[1:])
+                if y < u:
+                    u = y
+        dim.append([x,y,r,l,d,u])
+    r = max([dim[0][2],dim[1][2]])
+    l = min([dim[0][3],dim[1][3]])
+    d = max([dim[0][4],dim[1][4]])
+    u = min([dim[0][5],dim[1][5]])
+    return [(r-l)+2, (d-u)+2], [(-l), (-u)]
+
 def moveWire(grid, currentLocation, command, largestDistance, centralPort, z, t):
     direction = {"R": [0, 1], "L": [0,-1], "D": [1,0], "U": [-1,0]}
     for i in range(int(command[1:])):
@@ -24,11 +52,11 @@ def moveWire(grid, currentLocation, command, largestDistance, centralPort, z, t)
     return currentLocation,largestDistance, t
 
 def calcWires(wires):
-    grid = [["." for i in range(20000)] for y in range (20000)]
+    gridSize, centralPort = calcGridSize(wires)
+    grid = [["." for i in range(gridSize[0])] for y in range (gridSize[1])]
     print("Grid Made")
 
     largestDistance = 1000000000000000000000
-    centralPort = [10000, 10000]
     grid[centralPort[1]][centralPort[0]] = "o"
     for z in range(2):
         t = -1
