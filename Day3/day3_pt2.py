@@ -8,6 +8,27 @@ def loadInput():
 def calcDistance(pt1, pt2):
     return abs(pt1[0] - pt2[0]) + abs((pt1[1] - pt2[1]))
 
+def moveWire(grid, currentLocation, command, largestDistance, centralPort, z, t):
+    direction = {"R": [0, 1], 
+                  "L": [0,-1],
+                  "D": [1,0],
+                  "U": [-1,0]}
+
+    for i in range(int(command[1:])):
+        t+=1
+        if grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] == ".":
+            grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] = [t,z]
+        elif isinstance(grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i],list) and grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i][1] != z :
+            x = grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i][0]
+            grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] = "X"
+            dist = x +t
+            if dist < largestDistance:
+                largestDistance = dist
+
+    currentLocation[0] += direction[command[0]][1]*int(command[1:])
+    currentLocation[1] += direction[command[0]][0]*int(command[1:])
+    return currentLocation,largestDistance, t
+
 l = loadInput()
 def printLine(wires):
     largestDistance = 1000000000000000000000
@@ -19,64 +40,65 @@ def printLine(wires):
         t = -1
         currentLocation = centralPort.copy()
         for command in wires[z]:
-            if command[0] == "R":
-                for i in range(int(command[1:])):
-                    t += 1
-                    if grid[currentLocation[1]][currentLocation[0]+i] == ".":
-                        grid[currentLocation[1]][currentLocation[0]+i] = [t,z]
-                    elif isinstance(grid[currentLocation[1]][currentLocation[0]+i],list) and grid[currentLocation[1]][currentLocation[0]+i][1] != z :
-                        x = grid[currentLocation[1]][currentLocation[0]+i][0]
-                        grid[currentLocation[1]][currentLocation[0]+i] = "X"
-                        dist = x +t
-                        if dist < largestDistance:
-                            largestDistance = dist
+            currentLocation, largestDistance, t = moveWire(grid, currentLocation, command, largestDistance, centralPort, z, t)
+            # if command[0] == "R":
+            #     for i in range(int(command[1:])):
+            #         t += 1
+            #         if grid[currentLocation[1]][currentLocation[0]+i] == ".":
+            #             grid[currentLocation[1]][currentLocation[0]+i] = [t,z]
+            #         elif isinstance(grid[currentLocation[1]][currentLocation[0]+i],list) and grid[currentLocation[1]][currentLocation[0]+i][1] != z :
+            #             x = grid[currentLocation[1]][currentLocation[0]+i][0]
+            #             grid[currentLocation[1]][currentLocation[0]+i] = "X"
+            #             dist = x +t
+            #             if dist < largestDistance:
+            #                 largestDistance = dist
 
-                currentLocation[0] += int(command[1:])
-
-
-            elif command[0] == "L":
-                for i in range(int(command[1:])):
-                    t += 1
-                    if grid[currentLocation[1]][currentLocation[0]-i] == ".":
-                        grid[currentLocation[1]][currentLocation[0]-i] = t
-                    elif isinstance(grid[currentLocation[1]][currentLocation[0]-i],list) and grid[currentLocation[1]][currentLocation[0]-i][1] != z:
-                        x = grid[currentLocation[1]][currentLocation[0]-i][0]
-                        grid[currentLocation[1]][currentLocation[0]-i] = "X"
-                        dist = x +t
-                        if dist < largestDistance:
-                            largestDistance = dist
-
-                currentLocation[0] -= int(command[1:])
+            #     currentLocation[0] += int(command[1:])
 
 
-            elif command[0] == "D":
-                for i in range(int(command[1:])):
-                    t += 1
-                    if grid[currentLocation[1]+i][currentLocation[0]] == ".":
-                        grid[currentLocation[1]+i][currentLocation[0]] = t
-                    elif isinstance(grid[currentLocation[1]+i][currentLocation[0]],list) and grid[currentLocation[1]+i][currentLocation[0]][1] != z:
-                        x = grid[currentLocation[1]+i][currentLocation[0]][0]
-                        grid[currentLocation[1]+i][currentLocation[0]] = "X"
-                        dist = x + t
-                        if dist < largestDistance:
-                            largestDistance = dist
+            # elif command[0] == "L":
+            #     for i in range(int(command[1:])):
+            #         t += 1
+            #         if grid[currentLocation[1]][currentLocation[0]-i] == ".":
+            #             grid[currentLocation[1]][currentLocation[0]-i] = t
+            #         elif isinstance(grid[currentLocation[1]][currentLocation[0]-i],list) and grid[currentLocation[1]][currentLocation[0]-i][1] != z:
+            #             x = grid[currentLocation[1]][currentLocation[0]-i][0]
+            #             grid[currentLocation[1]][currentLocation[0]-i] = "X"
+            #             dist = x +t
+            #             if dist < largestDistance:
+            #                 largestDistance = dist
 
-                currentLocation[1] += int(command[1:])
+            #     currentLocation[0] -= int(command[1:])
 
 
-            elif command[0] == "U":
-                for i in range(int(command[1:])):
-                    t += 1
-                    if grid[currentLocation[1]-i][currentLocation[0]] == ".":
-                        grid[currentLocation[1]-i][currentLocation[0]] = t
-                    elif isinstance(grid[currentLocation[1]-i][currentLocation[0]],list) and grid[currentLocation[1]-i][currentLocation[0]][1] != z:
-                        x = grid[currentLocation[1]-i][currentLocation[0]][0]
-                        grid[currentLocation[1]-i][currentLocation[0]] = "X"
-                        dist = x +t
-                        if dist < largestDistance:
-                            largestDistance = dist
+            # elif command[0] == "D":
+            #     for i in range(int(command[1:])):
+            #         t += 1
+            #         if grid[currentLocation[1]+i][currentLocation[0]] == ".":
+            #             grid[currentLocation[1]+i][currentLocation[0]] = t
+            #         elif isinstance(grid[currentLocation[1]+i][currentLocation[0]],list) and grid[currentLocation[1]+i][currentLocation[0]][1] != z:
+            #             x = grid[currentLocation[1]+i][currentLocation[0]][0]
+            #             grid[currentLocation[1]+i][currentLocation[0]] = "X"
+            #             dist = x + t
+            #             if dist < largestDistance:
+            #                 largestDistance = dist
 
-                currentLocation[1] -= int(command[1:])
+            #     currentLocation[1] += int(command[1:])
+
+
+            # elif command[0] == "U":
+            #     for i in range(int(command[1:])):
+            #         t += 1
+            #         if grid[currentLocation[1]-i][currentLocation[0]] == ".":
+            #             grid[currentLocation[1]-i][currentLocation[0]] = t
+            #         elif isinstance(grid[currentLocation[1]-i][currentLocation[0]],list) and grid[currentLocation[1]-i][currentLocation[0]][1] != z:
+            #             x = grid[currentLocation[1]-i][currentLocation[0]][0]
+            #             grid[currentLocation[1]-i][currentLocation[0]] = "X"
+            #             dist = x +t
+            #             if dist < largestDistance:
+            #                 largestDistance = dist
+
+            #     currentLocation[1] -= int(command[1:])
 
             print("Command Complete")
         print("Wire Complete")

@@ -8,6 +8,28 @@ def loadInput():
 def calcDistance(pt1, pt2):
     return abs(pt1[0] - pt2[0]) + abs((pt1[1] - pt2[1]))
 
+def moveWire(grid, currentLocation, command, largestDistance, centralPort):
+    direction = {"R": [0, 1], 
+                  "L": [0,-1],
+                  "D": [1,0],
+                  "U": [-1,0]}
+
+    for i in range(int(command[1:])):
+        if grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] == ".":
+            grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] = "A"
+        elif grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] == "A":
+            grid[currentLocation[1]+direction[command[0]][0]*i][currentLocation[0]+direction[command[0]][1]*i] = "X"
+            temp = currentLocation.copy()
+            temp[0] += direction[command[0]][1]*i
+            temp[1] += direction[command[0]][0]*i
+            dist = calcDistance(centralPort,temp)
+            if dist < largestDistance:
+                largestDistance = dist
+
+    currentLocation[0] += direction[command[0]][1]*int(command[1:])
+    currentLocation[1] += direction[command[0]][0]*int(command[1:])
+    return currentLocation,largestDistance
+
 l = loadInput()
 def printLine(wires):
     largestDistance = 1000000000000000000000
@@ -18,63 +40,7 @@ def printLine(wires):
     for z in range(2):
         currentLocation = centralPort.copy()
         for command in wires[z]:
-            if command[0] == "R":
-                for i in range(int(command[1:])):
-                    if grid[currentLocation[1]][currentLocation[0]+i] == ".":
-                        grid[currentLocation[1]][currentLocation[0]+i] = "A"
-                    elif grid[currentLocation[1]][currentLocation[0]+i] == "A":
-                        grid[currentLocation[1]][currentLocation[0]+i] = "X"
-                        temp = currentLocation.copy()
-                        temp[0] += i
-                        dist = calcDistance(centralPort,temp)
-                        if dist < largestDistance:
-                            largestDistance = dist
-
-                currentLocation[0] += int(command[1:])
-
-
-            elif command[0] == "L":
-                for i in range(int(command[1:])):
-                    if grid[currentLocation[1]][currentLocation[0]-i] == ".":
-                        grid[currentLocation[1]][currentLocation[0]-i] = "A"
-                    elif grid[currentLocation[1]][currentLocation[0]-i] == "A":
-                        grid[currentLocation[1]][currentLocation[0]-i] = "X"
-                        temp = currentLocation.copy()
-                        temp[0] -= i
-                        dist = calcDistance(centralPort,temp)
-                        if dist < largestDistance:
-                            largestDistance = dist
-                currentLocation[0] -= int(command[1:])
-
-
-            elif command[0] == "D":
-                for i in range(int(command[1:])):
-                    if grid[currentLocation[1]+i][currentLocation[0]] == ".":
-                        grid[currentLocation[1]+i][currentLocation[0]] = "A"
-                    elif grid[currentLocation[1]+i][currentLocation[0]] == "A":
-                        grid[currentLocation[1]+i][currentLocation[0]] = "X"
-                        temp = currentLocation.copy()
-                        temp[1] += i
-                        dist = calcDistance(centralPort,temp)
-                        if dist < largestDistance:
-                            largestDistance = dist
-
-                currentLocation[1] += int(command[1:])
-
-
-            elif command[0] == "U":
-                for i in range(int(command[1:])):
-                    if grid[currentLocation[1]-i][currentLocation[0]] == ".":
-                        grid[currentLocation[1]-i][currentLocation[0]] = "A"
-                    elif grid[currentLocation[1]-i][currentLocation[0]] == "A":
-                        grid[currentLocation[1]-i][currentLocation[0]] = "X"
-                        temp = currentLocation.copy()
-                        temp[1] -= i
-                        dist = calcDistance(centralPort,temp)
-                        if dist < largestDistance:
-                            largestDistance = dist
-                            
-                currentLocation[1] -= int(command[1:])
+            currentLocation, largestDistance = moveWire(grid, currentLocation, command, largestDistance, centralPort)
 
             print("Command Complete")
         print("Wire Complete")
