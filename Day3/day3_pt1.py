@@ -29,8 +29,6 @@ def printLine(wires):
                         dist = calcDistance(centralPort,temp)
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
-                            print ("\n",dist,"\n")
 
                 currentLocation[0] += int(command[1:])
 
@@ -46,8 +44,6 @@ def printLine(wires):
                         dist = calcDistance(centralPort,temp)
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
-                            print ("\n",dist,"\n")
                 currentLocation[0] -= int(command[1:])
 
 
@@ -62,8 +58,6 @@ def printLine(wires):
                         dist = calcDistance(centralPort,temp)
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
-                            print ("\n",dist,"\n")
 
                 currentLocation[1] += int(command[1:])
 
@@ -79,8 +73,7 @@ def printLine(wires):
                         dist = calcDistance(centralPort,temp)
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
-                            print ("\n",dist,"\n")
+                            
                 currentLocation[1] -= int(command[1:])
 
             print("Command Complete")

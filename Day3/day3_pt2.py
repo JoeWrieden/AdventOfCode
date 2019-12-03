@@ -30,7 +30,6 @@ def printLine(wires):
                         dist = x +t
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
 
                 currentLocation[0] += int(command[1:])
 
@@ -46,7 +45,7 @@ def printLine(wires):
                         dist = x +t
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
+
                 currentLocation[0] -= int(command[1:])
 
 
@@ -61,7 +60,6 @@ def printLine(wires):
                         dist = x + t
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
 
                 currentLocation[1] += int(command[1:])
 
@@ -77,7 +75,7 @@ def printLine(wires):
                         dist = x +t
                         if dist < largestDistance:
                             largestDistance = dist
-                            print("\nAAAAAA\n")
+
                 currentLocation[1] -= int(command[1:])
 
             print("Command Complete")
