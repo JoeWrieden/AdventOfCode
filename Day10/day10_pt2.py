@@ -6,22 +6,26 @@ def loadMap():
             l.append([x for x in i.replace("\n","")])
     return l
 
-asteroidMap = loadMap()
-asteriods = []
-
-for y in range(len(asteroidMap)):
-    for x in range(len(asteroidMap[y])):
-        if asteroidMap[y][x] == "#":
-            asteriods.append((x,y))
+def loadAsteroids():
+    asteroidMap = loadMap()
+    asteriods = []
+    for y in range(len(asteroidMap)):
+        for x in range(len(asteroidMap[y])):
+            if asteroidMap[y][x] == "#":
+                asteriods.append((x,y))
+    return asteriods
     
 def takeFirst(elem):
     return elem[0]
 
-def lazerLoop(asteriods, destroyNum):
+def lazerLoop():
+    destroyNum = 1
     station = (37, 25)
+    asteriods = loadAsteroids()
     while True:
         canSee, asteriodsSeen = discoverAsteriods(asteriods, station)
         astAng = [[canSee[i], asteriodsSeen[i]] for i in range(len(canSee))]
+
         pos = []
         neg = []
         for asteroid in astAng:
@@ -29,9 +33,10 @@ def lazerLoop(asteriods, destroyNum):
                 pos.append(asteroid)
             else:
                 neg.append(asteroid)
+
         pos = sorted(pos, key=takeFirst)
         neg = sorted(neg, key=takeFirst)
-        print(len(astAng))
+
         for i in pos:
             asteriods.remove(i[1])
             destroyNum+=1
@@ -43,8 +48,6 @@ def lazerLoop(asteriods, destroyNum):
             if destroyNum == 200:
                 return i
         
-
-
 def discoverAsteriods(asteriods, curr):
     canSee = []
     asteroidsSeen = []
@@ -55,7 +58,6 @@ def discoverAsteriods(asteriods, curr):
             if math.atan2(xDiff, yDiff) not in canSee:
                 canSee.append(math.atan2(xDiff, yDiff))
                 asteroidsSeen.append(look)
-    
     return canSee, asteroidsSeen
     
-print(lazerLoop(asteriods, 1))
+print(lazerLoop())
