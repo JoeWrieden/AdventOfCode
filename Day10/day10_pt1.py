@@ -14,7 +14,7 @@ def loadAsteroids():
             if asteroidMap[y][x] == "#":
                 asteriods.append((x,y))
     return asteriods
-    
+
 def discoverAstroids(asteriods):
     mostSeen = 0
     for curr in asteriods:
@@ -23,7 +23,7 @@ def discoverAstroids(asteriods):
             if look != curr:
                 yDiff = curr[1] - look[1]
                 xDiff = look[0] - curr[0]
-                canSee.append(math.atan2(xDiff, yDiff)) 
+                canSee.append(math.atan2(xDiff, yDiff))
         canSee = set(canSee)
         if len(canSee) > mostSeen:
             mostSeen = len(canSee)
