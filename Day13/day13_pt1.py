@@ -88,21 +88,32 @@ def readIntCode():
     intCode += [0] * 999
     return intCode
 
+def countBlock(grid):
+    blockCount = 0
+    for i in grid:
+        for x in i:
+            if x == 2:
+                blockCount += 1
+    return blockCount
 
 def createboard(arcadeMachine):
-    blockCount = 0
+    grid = [[0 for i in range(35)] for j in range(25)]
     while True:
+        x = y = 0
         for i in range(3):
-            x = arcadeMachine.run()
-            if x == None:
-                return blockCount
-            if i == 2:
-                if x ==2:
-                    blockCount+=1
-    
+            n = arcadeMachine.run([])
+            if n == None:
+                return grid
+            elif i == 0:
+                x = n
+            elif i == 1:
+                y = n
+            else:
+                grid[y][x] = n
+
 
 intCode = readIntCode()
 
 arcadeMachine = IntCode(intCode)
 
-print(createboard(arcadeMachine))
+print(countBlock(createboard(arcadeMachine)))

@@ -88,34 +88,54 @@ def readIntCode():
     intCode += [0] * 9999999
     return intCode
 
-def createboard(arcadeMachine):
+def countBlock(grid):
+    blockCount = 0
+    for i in grid:
+        for x in i:
+            if x == 2:
+                blockCount += 1
+    return blockCount
+
+def createboard(arcadeMachine, move):
     arcadeMachine.i = 0
     grid = [[0 for i in range(35)] for j in range(25)]
-    move = 8
-    while move not in [-1, 0, 1]:
-        try:
-            move = int(input("-1: left, 0:stay 1:right"))
-        except ValueError:
-            move = 0
-    while True:
+    loop = True
+    while loop:
         x = y = 0
         for i in range(3):
             n = arcadeMachine.run([move])
             if n == None:
-                return grid, arcadeMachine
+                loop = False
+                break
             elif i == 0:
                 x = n
             elif i == 1:
                 y = n
             else:
                 grid[y][x] = n
+                if n == 4:
+                    ball = x
+                elif n == 3:
+                    padd = x
+    if ball < padd:
+        return grid, arcadeMachine, -1
+    elif ball > padd:
+        return grid, arcadeMachine, 1
+    else:
+        return grid, arcadeMachine, 0
 
 intCode = readIntCode()
 intCode[0] = 2
+move = 0
 arcadeMachine = IntCode(intCode)
 while True:
-    grid, arcadeMachine = createboard(arcadeMachine)
+    grid, arcadeMachine, move = createboard(arcadeMachine, move)
     for i in grid:
         for x in i:
-            print("\033[1;3"+str(x)+";40m"+str(x), end="")
+            if x > 4:
+                print("\033[1;36;40m"+str(x), end="")
+            else:
+                print("\033[1;3"+str(x)+";40m"+str(x), end="")
         print()
+    if not countBlock(grid):
+        break
