@@ -98,11 +98,12 @@ def createboard(arcadeMachine):
         except ValueError:
             move = 0
     while True:
+        x = y = 0
         for i in range(3):
             n = arcadeMachine.run([move])
             if n == None:
                 return grid, arcadeMachine
-            elif i ==0:
+            elif i == 0:
                 x = n
             elif i == 1:
                 y = n
