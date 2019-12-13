@@ -130,9 +130,10 @@ def printGrid(grid):
     for i in grid:
         for x in i:
             if x > 4:
-                print("\033[1;36;40m"+str(x), end="")
+                print("\033[1;31;40m⧄ ", end = "")
+                print("\033[1;36;40mScore: "+str(x), end="")
             else:
-                print("\033[1;3"+str(x)+";40m"+str(x), end="")
+                print("\033[1;3"+str(x)+";40m"+str(x).replace("0", "  ").replace("1", "⧄ ").replace("2","■ ").replace("3", "__").replace("4","● "), end="")
         print()
 
 
@@ -141,7 +142,7 @@ intCode[0] = 2
 move = 0
 arcadeMachine = IntCode(intCode)
 
-autoMode = 0
+autoMode = 1
 
 while True:
     if autoMode:
