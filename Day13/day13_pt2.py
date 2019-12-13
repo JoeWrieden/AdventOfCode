@@ -124,12 +124,7 @@ def createboard(arcadeMachine, move):
     else:
         return grid, arcadeMachine, 0
 
-intCode = readIntCode()
-intCode[0] = 2
-move = 0
-arcadeMachine = IntCode(intCode)
-while True:
-    grid, arcadeMachine, move = createboard(arcadeMachine, move)
+def printGrid(grid):
     for i in grid:
         for x in i:
             if x > 4:
@@ -137,5 +132,25 @@ while True:
             else:
                 print("\033[1;3"+str(x)+";40m"+str(x), end="")
         print()
+
+
+intCode = readIntCode()
+intCode[0] = 2
+move = 0
+arcadeMachine = IntCode(intCode)
+
+autoMode = 1
+
+while True:
+    if autoMode:
+        grid, arcadeMachine, move = createboard(arcadeMachine, move)
+    else:
+        try:
+            move = int(input("-1: left, 0: stop, 1:right"))
+        except ValueError:
+            move = 0
+        grid, arcadeMachine, move = createboard(arcadeMachine, move)
+    
+    printGrid(grid)
     if not countBlock(grid):
         break
