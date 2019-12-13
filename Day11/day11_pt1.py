@@ -4,7 +4,7 @@ class IntCode():
         self.i = 0
         self.relativeBase = 0
 
-    def run(self, inputs = []):
+    def run(self, inputs):
         while True:
             self.i %= len(self.intCode)
             op = self.intCode[self.i] % 100
@@ -99,7 +99,7 @@ def paintingRobot(intCode):
     grid = [[0 for i in range(200)] for j in range(200)]
     x = y = 100
     toPaint = computer.run([grid[y][x]])
-    toDir= computer.run()
+    toDir= computer.run([])
 
     while toPaint != None:
         grid[y][x] = toPaint
@@ -119,7 +119,7 @@ def paintingRobot(intCode):
         y += directionsY[direction]
 
         toPaint = computer.run([grid[y][x]])
-        toDir= computer.run()
+        toDir= computer.run([])
     
     return len(set(painted))
                 
