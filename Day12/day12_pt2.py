@@ -32,7 +32,7 @@ def calculateGravity(planets, axis):
 def simulateTimeStep(planets, axis):
     planets = calculateGravity(planets, axis)
     for planet in planets:
-            planet[0][axis] += planet[1][axis]
+        planet[0][axis] += planet[1][axis]
     return planets
 
 planets = loadPlanets()
