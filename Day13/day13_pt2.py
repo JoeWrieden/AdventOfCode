@@ -1,3 +1,4 @@
+import os
 class IntCode():
     def __init__(self, intCode):
         self.intCode = intCode
@@ -125,6 +126,7 @@ def createboard(arcadeMachine, move):
         return grid, arcadeMachine, 0
 
 def printGrid(grid):
+    os.system("clear")
     for i in grid:
         for x in i:
             if x > 4:
@@ -139,14 +141,14 @@ intCode[0] = 2
 move = 0
 arcadeMachine = IntCode(intCode)
 
-autoMode = 1
+autoMode = 0
 
 while True:
     if autoMode:
         grid, arcadeMachine, move = createboard(arcadeMachine, move)
     else:
         try:
-            move = int(input("-1: left, 0: stop, 1:right"))
+            move = int(input("-1 = left, 0 = stay, 1 = right: "))
         except ValueError:
             move = 0
         grid, arcadeMachine, move = createboard(arcadeMachine, move)
